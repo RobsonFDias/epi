@@ -62,6 +62,10 @@ error_reporting(E_ALL);
                 width: 200px;
                 background-image: url('img/loading.gif');
             }
+
+            #msg-sucess,#msg-error{
+                display: none;
+            }
         </style>
 
     </head>

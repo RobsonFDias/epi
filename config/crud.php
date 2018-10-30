@@ -9,10 +9,9 @@ class Crud extends PDO {
     var $conexao;
 
     public function __construct() {
-        $pdo = null;
         try {
             //$this->conexao = new PDO("mysql:host=uaivo.mysql.uhserver.com;port=3306;dbname=uaivo", "uaivoapp", "uai@2017");
-            $this->conexao = new PDO("mysql:host=localhost;port=3306;dbname=uaivo", "root", "");
+            $this->conexao = new PDO("mysql:host=localhost;port=3306;dbname=epi", "root", "");
             $this->conexao->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $ex) {
             if ($ex->getCode() == 2002) {
@@ -94,13 +93,10 @@ class Crud extends PDO {
             endfor;
 
             $stmt->execute();
-            if ($this->conexao->commit()) :
-                $id = Crud::novoID($b[0]);
-            else :
-                $id = '0';
-                Crud::desconectar();
-            endif;
-
+            $this->conexao->commit();
+            
+            $id = Crud::novoID($b[0]);
+            Crud::desconectar();
             return($id);
         } catch (PDOException $ex) {
             $this->conexao->rollback();

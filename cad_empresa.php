@@ -15,7 +15,7 @@
                 <div class="x_panel">
                     <div class="x_content">
                         <input type="hidden" id="area" value="empresas" />
-                        <form class="form-horizontal form-label-left" novalidate="" id="formulario" method="post" enctype="multipart/form-data">
+                        <form class="form-horizontal form-label-left" novalidate="" id="formulario" action="view/empresas/salvar.php" method="post" enctype="multipart/form-data">
 
                             <span class="section">Cadastro Empresa</span>
 

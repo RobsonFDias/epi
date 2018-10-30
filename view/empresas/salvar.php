@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') :
 
     $situacao = isset($_POST['situacao']) ? 1 : 0;
 
-    $empresaModelo = new FestaModelo();
+    $empresaModelo = new EmpresaModelo();
     $empresaModelo->setId($_POST['id']);
     $empresaModelo->setRazao(utf8_decode($_POST['razao']));
     $empresaModelo->setEmail(utf8_decode($_POST['email']));
@@ -23,8 +23,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') :
     $empresaModelo->setStatus($situacao);
 
     $empresaControle = new EmpresaControle();
-    $retorno = $empresaControle->salvar($empresaModelo);
+    $retorno = $empresaControle->salvarEmpresa($empresaModelo);
 
     echo $retorno;
+else :
+    echo $_SERVER['REQUEST_METHOD'];
 endif;
 ?>

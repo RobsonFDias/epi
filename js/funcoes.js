@@ -11,29 +11,38 @@ $(document).ready(function ($) {
     $("#formulario").submit(function (event) {
         event.preventDefault();
 
-        $("#divCarregando").show();
-        var formData = new FormData($(this)[0]);
+        var form = $(this);
+        var formData = new FormData(form);
         var caminho = $("#area").val();
 
         $.ajax({
-            url: 'view/' + caminho + '/salvar.php',
-            type: 'POST',
+            beforeSend: function () {
+                $('#divCarregando').fadeIn();
+            },
+            url: form.attr('action'),
+            type: form.attr('method'),
             data: formData,
-            async: false,
+            async: true,
             cache: false,
             contentType: false,
             processData: false,
             success: function (data) {
                 $('#divCarregando').fadeOut('slow');
+                //alert(data);
                 if (data != '0') {
                     window.location.href = "?pg=" + caminho;
                 } else {
 
                 }
+            }, error: function (request, status, error) {
+                alert(request.responseText);
+                $('#divCarregando').fadeOut('slow');
+                $('#msg-error').fadeIn('slow');
+                $('#msg-error').fadeOut(2000, "linear");
             }
         });
+        return false;
     });
-
 });
 
 

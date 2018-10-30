@@ -4,10 +4,11 @@ class EmpresaControle extends Crud {
 
     private $empresaModelo;
 
-    public function salvar(EmpresaModelo $empresaModelo) {
+    public function salvarEmpresa(EmpresaModelo $empresaModelo) {
         $this->empresaModelo = $empresaModelo;
+        
         try {
-            if ($this->empresaModelo->getId() == "novo"):
+            if ($this->empresaModelo->getId() == ""):
                 $id = parent::inserir("empresa", "id,razao,email,cnpj,site,senha,telefone,status", $this->usuarioModelo->getId() . "|" .
                                 $this->empresaModelo->getRazao() . "|" .
                                 $this->empresaModelo->getEmail() . "|" .
@@ -29,7 +30,7 @@ class EmpresaControle extends Crud {
             endif;
             return($id);
         } catch (Exception $e) {
-            print($e->getMessage());
+            print('$e->getMessage()');
         }
     }
 
