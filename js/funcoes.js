@@ -13,7 +13,6 @@ $(document).ready(function ($) {
 
         var form = $(this);
         var formData = new FormData(form);
-        var caminho = $("#area").val();
 
         $.ajax({
             beforeSend: function () {
@@ -28,14 +27,12 @@ $(document).ready(function ($) {
             processData: false,
             success: function (data) {
                 $('#divCarregando').fadeOut('slow');
-                //alert(data);
-                if (data != '0') {
-                    window.location.href = "?pg=" + caminho;
-                } else {
-
-                }
+                alert(data);
+                $('#msg-sucess').fadeIn('slow');
+                $('#msg-sucess').fadeOut(2000, "linear");
+                //window.location.href = "?pg=" + caminho;
             }, error: function (request, status, error) {
-                alert(request.responseText);
+                alert(request + " - " + request.getResponseHeader() + " - " + status + " - " + error + " - " + error.message);
                 $('#divCarregando').fadeOut('slow');
                 $('#msg-error').fadeIn('slow');
                 $('#msg-error').fadeOut(2000, "linear");

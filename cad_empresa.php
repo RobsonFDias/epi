@@ -15,7 +15,7 @@
                 <div class="x_panel">
                     <div class="x_content">
                         <input type="hidden" id="area" value="empresas" />
-                        <form class="form-horizontal form-label-left" novalidate="" id="formulario" action="view/empresas/salvar.php" method="post" enctype="multipart/form-data">
+                        <form class="form-horizontal form-label-left" id="formulario" action="view/empresas/salvar.php" method="post" enctype="multipart/form-data">
 
                             <span class="section">Cadastro Empresa</span>
 
@@ -44,7 +44,7 @@
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12" for="website">Website URL <span class="required">*</span>
                                 </label>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <input type="url" id="website" name="site" required="required" placeholder="www.website.com" class="form-control col-md-7 col-xs-12">
+                                    <input type="url" id="website" name="site" placeholder="https://www.website.com" class="form-control col-md-7 col-xs-12">
                                 </div>
                             </div>
                             <div class="item form-group">

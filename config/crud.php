@@ -60,8 +60,9 @@ class Crud extends PDO {
             foreach ($sql as $sql):
                 $id = $sql[0];
             endforeach;
-            return($id);
+
             Crud::desconectar();
+            return($id);
         } catch (Exception $e) {
             print($e->getMessage());
         }
@@ -81,11 +82,10 @@ class Crud extends PDO {
         for ($i = 1; $i <= count($b); $i++): $camposF .= $b[$i] . ",";
         endfor;
         $camposF = substr($camposF, 0, count($camposF) - 3);
-
-        //echo $camposF."<br>".$this->valores;
         try {
             $this->conexao->beginTransaction();
             $stmt = $this->conexao->prepare("INSERT INTO " . $this->tabela . " (" . $camposF . ") VALUES (" . substr($valor, 1, 10000) . ")");
+
             $cont = 1;
             for ($i = 1; $i <= count($c) - 1; $i++):
                 $stmt->bindValue($cont, $c[$i]);
@@ -93,14 +93,15 @@ class Crud extends PDO {
             endfor;
 
             $stmt->execute();
-            $this->conexao->commit();
-            
-            $id = Crud::novoID($b[0]);
-            Crud::desconectar();
-            return($id);
+            if ($this->conexao->commit()) :
+                $id = Crud::novoID($b[0]);
+            else :
+                $id = '0';
+            endif;
+            return $id;
         } catch (PDOException $ex) {
             $this->conexao->rollback();
-            echo "Erro ao tentar Inserir: " . $ex->getMessage();
+            print_r("Erro ao tentar Inserir: " . $ex->getMessage());
         }
     }
 

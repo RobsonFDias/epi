@@ -6,9 +6,9 @@ class EmpresaControle extends Crud {
 
     public function salvarEmpresa(EmpresaModelo $empresaModelo) {
         $this->empresaModelo = $empresaModelo;
-        
+
         try {
-            if ($this->empresaModelo->getId() == ""):
+            if ($this->empresaModelo->getId() == ""):                
                 $id = parent::inserir("empresa", "id,razao,email,cnpj,site,senha,telefone,status", $this->usuarioModelo->getId() . "|" .
                                 $this->empresaModelo->getRazao() . "|" .
                                 $this->empresaModelo->getEmail() . "|" .
@@ -16,7 +16,7 @@ class EmpresaControle extends Crud {
                                 $this->empresaModelo->getSite() . "|" .
                                 $this->empresaModelo->getSenha() . "|" .
                                 $this->empresaModelo->getTelefone() . "|" .
-                                $this->empresaModelo->getStatus());
+                                $this->empresaModelo->getStatus());            
             else:
                 parent::atualizar("empresa", "razao,email,cnpj,site,senha,telefone,status", $this->empresaModelo->getRazao() . "|" .
                         $this->empresaModelo->getEmail() . "|" .
@@ -25,12 +25,12 @@ class EmpresaControle extends Crud {
                         $this->empresaModelo->getSenha() . "|" .
                         $this->empresaModelo->getTelefone() . "|" .
                         $this->empresaModelo->getStatus() . "|" .
-                        $this->usuarioModelo->__getId(), "id = ?");
-                $id = $this->usuarioModelo->__getId();
+                        $this->usuarioModelo->getId(), "id = ?");
+                $id = $this->usuarioModelo->getId();
             endif;
             return($id);
         } catch (Exception $e) {
-            print('$e->getMessage()');
+            print($e->getMessage());
         }
     }
 
