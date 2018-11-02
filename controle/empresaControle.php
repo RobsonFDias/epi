@@ -8,113 +8,45 @@ class EmpresaControle extends Crud {
         $this->empresaModelo = $empresaModelo;
 
         try {
-            if ($this->empresaModelo->getId() == ""):                
-                $id = parent::inserir("empresa", "id,razao,email,cnpj,site,senha,telefone,status", $this->usuarioModelo->getId() . "|" .
+            if ($this->empresaModelo->getId() == ""):
+                $id = parent::inserir("empresa", "id,razao,email,cnpj,site,senha,telefone,status", $this->empresaModelo->getId() . "|" .
                                 $this->empresaModelo->getRazao() . "|" .
                                 $this->empresaModelo->getEmail() . "|" .
                                 $this->empresaModelo->getCnpj() . "|" .
                                 $this->empresaModelo->getSite() . "|" .
                                 $this->empresaModelo->getSenha() . "|" .
                                 $this->empresaModelo->getTelefone() . "|" .
-                                $this->empresaModelo->getStatus());            
+                                $this->empresaModelo->getStatus());
             else:
-                parent::atualizar("empresa", "razao,email,cnpj,site,senha,telefone,status", $this->empresaModelo->getRazao() . "|" .
+                parent::atualizar("empresa", "razao,email,cnpj,site,senha,telefone,status,", $this->empresaModelo->getRazao() . "|" .
                         $this->empresaModelo->getEmail() . "|" .
                         $this->empresaModelo->getCnpj() . "|" .
                         $this->empresaModelo->getSite() . "|" .
                         $this->empresaModelo->getSenha() . "|" .
                         $this->empresaModelo->getTelefone() . "|" .
                         $this->empresaModelo->getStatus() . "|" .
-                        $this->usuarioModelo->getId(), "id = ?");
-                $id = $this->usuarioModelo->getId();
+                        $this->empresaModelo->getId(), "id = ?");
+                $id = $this->empresaModelo->getId();
             endif;
             return($id);
-        } catch (Exception $e) {
-            print($e->getMessage());
+        } catch (PDOException $e) {
+            echo($e->getMessage());
         }
     }
 
-    public function atualizarLogado($id, $status) {
+    public function buscarTodasEmpresa() {
         try {
-            parent::atualizar("usuario", "logado,", $status . "|" . $id, "id = ?");
-        } catch (Exception $e) {
-            print($e->getMessage());
-        }
-    }
-
-    public function buscarUsuarioId($id) {
-        try {
-            $sql = parent::selecionar("usuario", "nome,email,senha,img,sexo", "id = '$id'");
+            $sql = parent::selecionar("empresa", "id,razao,email,cnpj,site,senha,telefone,status", "1 = 1");
             return($sql);
-        } catch (Exception $e) {
+        } catch (PDOException $e) {
             print($e->getMessage());
         }
     }
 
-    public function buscarUserId($id) {
+    public function buscarEmpresaId($id) {
         try {
-            $sql = parent::select("usuario", "nome,email,senha,img,sexo", "id = '" . $id . "'");
+            $sql = parent::selecionar("empresa", "razao,email,cnpj,site,senha,telefone,status", "id = '" . $id . "'");
             return($sql);
-        } catch (Exception $e) {
-            print($e->getMessage());
-        }
-    }
-
-    public function buscarEmail($email) {
-        try {
-            $sql = parent::select("usuario", "email", "email = '" . $email . "'");
-            foreach ($sql as $sql) :
-                $e = $sql[0];
-            endforeach;
-            return($e);
-        } catch (Exception $e) {
-            print($e->getMessage());
-        }
-    }
-
-    public function deletarUsuario($id) {
-        try {
-            parent::deletar("usuario", "id = '$id'");
-        } catch (Exception $e) {
-            print($e->getMessage());
-        }
-    }
-
-    public function buscarUsuarioJson($id) {
-        try {
-            $sql = parent::json("usuario u", "u.id,u.nome,u.email,u.senha,u.telefone,u.data_nascimento,u.img,u.sexo,p.id_perfil,p.sobre,p.estado_civil,p.sexualidade,p.altura,p.peso,p.cigarro,p.alcool,a.apelido", "INNER JOIN perfil p ON p.usuario = u.id INNER JOIN apelido a ON a.usuario = u.id WHERE u.id = '" . $id . "'", "sim");
-            //$sql = parent::json("usuario","id,nome,email,senha,telefone,img,sexo","id = '".$id."'",NULL);
-            return($sql);
-        } catch (Exception $e) {
-            print($e->getMessage());
-        }
-    }
-
-    public function buscarUsuario($id) {
-        try {
-            $sql = parent::json("usuario", "id,nome,email,senha,telefone,data_nascimento,img,sexo", "id = '" . $id . "'", NULL);
-            return($sql);
-        } catch (Exception $e) {
-            print($e->getMessage());
-        }
-    }
-
-    public function buscarTodosUsuario() {
-        try {
-            $sql = parent::select("usuario", "id,nome,img", "img <> '' order by id desc");
-            return($sql);
-        } catch (Exception $e) {
-            print($e->getMessage());
-        }
-    }
-
-    public function buscarQuantidadeUsuario() {
-        try {
-            $sql = parent::select("usuario", "COUNT(id)", "1 = 1");
-            foreach ($sql as $q) :
-                $quantUsuario = $q[0];
-            endforeach;
-            return($quantUsuario);
         } catch (Exception $e) {
             print($e->getMessage());
         }

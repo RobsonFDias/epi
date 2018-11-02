@@ -1,3 +1,12 @@
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<?php
+include './util/mask.php';
+include './config/crud.php';
+include './controle/empresaControle.php';
+
+$sql = new EmpresaControle();
+$obj = json_decode($sql->buscarTodasEmpresa());
+?>
 <!-- page content -->
 <div class="right_col" role="main">    
     <div class="row">
@@ -35,18 +44,17 @@
                         </thead>
 
                         <tbody>
-                            <tr>
-                                <td>Tiger Nixon</td>
-                                <td>000.000.000/0000-00</td>
-                                <td>37 0000 0000</td>
-                                <td>Ativo</td>
-                            </tr>
-                            <tr>
-                                <td>Tiger Nixon</td>
-                                <td>000.000.000/0000-00</td>
-                                <td>37 0000 0000</td>
-                                <td>Ativo</td>
-                            </tr>
+                            <?php
+                            foreach ($obj as $registro):
+                                ?>
+                                <tr>
+                                    <td style="display: none;" class="id"><?= base64_encode($registro->id) ?></td>
+                                    <td><?= $registro->razao ?></td>
+                                    <td><?= Mascara::mask($registro->cnpj,'##.###.###/####-##') ?></td>
+                                    <td><?= $registro->telefone ?></td>
+                                    <td><?= ($registro->status ? 'Ativo' : 'Inativo') ?></td>
+                                </tr>
+                            <?php endforeach; ?>
                         </tbody>
                     </table>
                 </div>
@@ -55,4 +63,4 @@
     </div>
 </div>
 
-<!-- /page content -->
+<!--/page content -->

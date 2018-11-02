@@ -8,26 +8,28 @@ include ("../../config/crud.php");
 include ("../../controle/empresaControle.php");
 include ("../../modelo/empresaModelo.php");
 
-if ($_SERVER['REQUEST_METHOD'] == 'post') :
+if ($_SERVER['REQUEST_METHOD'] == 'POST') :
 
-    $situacao = ($_POST['situacao'] == 'on') ? 1 : 0;
+    $situacao = ($_POST['situacao'] == 'on' ? 1 : 0);
     $caracter = array(".", "/", "-");
     $cnpj = str_replace($caracter, "", $_POST['cnpj']);
 
     $empresaModelo = new EmpresaModelo();
-    $empresaModelo->setId((int)$_POST['id']);
+    $empresaModelo->setId((int) $_POST['id']);
     $empresaModelo->setRazao(utf8_decode($_POST['razao']));
     $empresaModelo->setEmail(utf8_decode($_POST['email']));
-    $empresaModelo->setCnpj((int) $cnpj);
+    $empresaModelo->setCnpj(utf8_decode($cnpj));
     $empresaModelo->setSite(utf8_decode($_POST['site']));
     $empresaModelo->setSenha($_POST['senha']);
     $empresaModelo->setTelefone($_POST['telefone']);
-    $empresaModelo->setStatus((int)$situacao);
+    $empresaModelo->setStatus((int) $situacao);
 
     $empresaControle = new EmpresaControle();
     $retorno = $empresaControle->salvarEmpresa($empresaModelo);
-    else:
-        echo 'dsada';
+    
+    echo $retorno;
+else:
+    echo $_SERVER['REQUEST_METHOD'];
 
 endif;
 ?>

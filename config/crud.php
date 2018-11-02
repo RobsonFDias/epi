@@ -11,7 +11,12 @@ class Crud extends PDO {
     public function __construct() {
         try {
             //$this->conexao = new PDO("mysql:host=uaivo.mysql.uhserver.com;port=3306;dbname=uaivo", "uaivoapp", "uai@2017");
-            $this->conexao = new PDO("mysql:host=localhost;port=3306;dbname=epi", "root", "");
+            $opt = array(
+                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ,
+                PDO::ATTR_EMULATE_PREPARES => false,
+            );
+            $this->conexao = new PDO("mysql:host=localhost;port=3306;dbname=epi", "root", "", $opt);
             $this->conexao->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $ex) {
             if ($ex->getCode() == 2002) {
@@ -31,24 +36,15 @@ class Crud extends PDO {
         $this->tabela = $tabela;
         $this->condicao = $condicao;
         try {
-            $sql = $this->conexao->query("select $this->campos from $this->tabela where $this->condicao");
-            $row[$tabela] = $sql->fetchAll(PDO::FETCH_ASSOC);
-            return($row);
-            Crud::desconectar();
-        } catch (PDOException $ex) {
-            echo "Erro: " . $ex->getMessage();
-        }
-    }
-
-    public function select($tabela, $campos, $condicao) {
-        $this->campos = $campos;
-        $this->tabela = $tabela;
-        $this->condicao = $condicao;
-        //print "select $this->campos from $this->tabela where $this->condicao";
-        try {
+            $json = array();
             $sql = $this->conexao->query("select $this->campos from $this->tabela where $this->condicao")->fetchAll();
-            return($sql);
+            foreach ($sql as $key => $value) {
+                foreach ($value as $k => $v) {
+                    $json[$key][$k] = utf8_encode($v);
+                }
+            }
             Crud::desconectar();
+            return(json_encode($json, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
         } catch (PDOException $ex) {
             echo "Erro: " . $ex->getMessage();
         }
@@ -56,11 +52,12 @@ class Crud extends PDO {
 
     public function novoID($u) {
         try {
-            $sql = $this->conexao->query("select max(" . $u . ") from $this->tabela");
-            foreach ($sql as $sql):
-                $id = $sql[0];
-            endforeach;
-
+            $sql = $this->conexao->query("select max(" . $u . ") from $this->tabela")->fetchAll();
+            foreach ($sql as $key => $value) {
+                foreach ($value as $k => $v) {
+                    $id = utf8_encode($v);
+                }
+            }
             Crud::desconectar();
             return($id);
         } catch (Exception $e) {
@@ -93,15 +90,13 @@ class Crud extends PDO {
             endfor;
 
             $stmt->execute();
-            if ($this->conexao->commit()) :
-                $id = Crud::novoID($b[0]);
-            else :
-                $id = '0';
-            endif;
+            $this->conexao->commit();
+            $id = Crud::novoID($b[0]);
             return $id;
         } catch (PDOException $ex) {
             $this->conexao->rollback();
-            print_r("Erro ao tentar Inserir: " . $ex->getMessage());
+            //print_r("Erro ao tentar Inserir: " . $ex->getMessage());
+            print_r("erro");
         }
     }
 
