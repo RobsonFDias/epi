@@ -63,7 +63,7 @@ error_reporting(E_ALL);
                 background-image: url('img/loading.gif');
             }
 
-            #msg-sucess,#msg-error{
+            #msg-sucess,#msg-error,#btn-confirm,#btn-alterar{
                 display: none;
             }
         </style>
@@ -256,7 +256,33 @@ error_reporting(E_ALL);
                 }
                 ?>
 
-                <div id="divCarregando" class="progresso"></div>               
+                <div id="divCarregando" class="progresso"></div>      
+
+                <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" id="mi-modal">
+                    <div class="modal-dialog modal-sm">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title" id="myModalLabel">Deseja excluir realmente este item ?</h4>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" id="modal-btn-si">Sim</button>
+                                <button type="button" class="btn btn-primary" id="modal-btn-no">Não</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" id="mi-modal-alterar">
+                    <div class="modal-dialog modal-sm">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title" id="myModalLabel">Erro ! Favor selecionar apenas um item para alteração!</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 <!-- footer content -->
                 <footer>

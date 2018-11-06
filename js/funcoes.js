@@ -62,8 +62,7 @@ $(document).ready(function ($) {
                 var tr = $(this);
                 timer = setTimeout(function () {
                     if (!prevent) {
-                        var id = tr.find("td:eq(0)").html();
-                        window.location.href = "?pg=" + $("#area").val() + '&id=' + id;
+                        selecionar(tr.find("td:eq(0)").html(), tr);
                     }
                     prevent = false;
                 }, delay);
@@ -73,8 +72,48 @@ $(document).ready(function ($) {
                 clearTimeout(timer);
                 prevent = true;
                 var id = tr.find("td:eq(0)").html();
-                tr.css('background', "#000000");
+                window.location.href = "?pg=" + $("#area").val() + '&id=' + id;
             });
+
+    //Chamar Alterar dados
+    $("#btn-alterar").click(function () {
+        if (arrayId.length > 1) {
+            $("#mi-modal-alterar").modal('show');
+            return;
+        } else {
+            window.location.href = "?pg=" + $("#area").val() + '&id=' + arrayId[0];
+        }
+    });
+
+    // Chamar confirm Excluir item 
+    var modalConfirm = function (callback) {
+
+        $("#btn-confirm").on("click", function () {
+            $("#mi-modal").modal('show');
+        });
+
+        $("#modal-btn-si").on("click", function () {
+            callback(true);
+            $("#mi-modal").modal('hide');
+        });
+
+        $("#modal-btn-no").on("click", function () {
+            callback(false);
+            $("#mi-modal").modal('hide');
+        });
+    };
+
+    // Result confirm Excluir item
+    modalConfirm(function (confirm) {
+        if (confirm) {
+            //Acciones si el usuario confirma
+            alert("CONFIRMADO");
+        } else {
+            //Acciones si el usuario no confirma
+            alert("NO CONFIRMADO");
+        }
+    });
+
 });
 
 function msgSucess() {
@@ -85,5 +124,27 @@ function msgSucess() {
 function msgError() {
     $('#msg-error').fadeIn('slow');
     $('#msg-error').fadeOut(2000, "linear");
+}
+
+//selecionar e linhas para excluir e alterar
+var arrayId = [];
+function selecionar(id, tr) {
+    if ($.inArray(id, arrayId) !== -1) {
+        if (arrayId.indexOf(id) !== -1) {
+            arrayId.splice(arrayId.indexOf(id), 1);
+        }
+        tr.css('background', "#fff");
+    } else {
+        arrayId.push(id);
+        tr.css('background', "#000000");
+    }
+
+    if (arrayId.length === 0) {
+        $('#btn-alterar').hide();
+        $('#btn-confirm').hide();
+    } else {
+        $('#btn-alterar').show();
+        $('#btn-confirm').show();
+    }
 }
 

@@ -8,12 +8,14 @@ $sql = new EmpresaControle();
 $obj = json_decode($sql->buscarTodasEmpresa());
 ?>
 <!-- page content -->
-<div class="right_col" role="main">    
+<div class="right_col" role="main">
     <div class="row">
         <div class="col-md-12 col-sm-12 col-xs-12">
             <div class="x_panel">
                 <div class="x_title">
-                    <button type="button" id="novo-cad" class="btn btn-success">Adicionar Empresa</button>
+                    <button type="button" id="novo-cad" class="btn btn-success">Adicionar</button>
+                    <button type="button" id="btn-alterar" class="btn btn-info">Alterar</button>
+                    <button type="button" id="btn-confirm" class="btn btn-danger">Excluir</button>
                     <input type="hidden" value="cad_empresa" id="area" />
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
@@ -50,7 +52,7 @@ $obj = json_decode($sql->buscarTodasEmpresa());
                                 <tr>
                                     <td style="display: none;" class="id"><?= base64_encode($registro->id) ?></td>
                                     <td><?= $registro->razao ?></td>
-                                    <td><?= Mascara::mask($registro->cnpj,'##.###.###/####-##') ?></td>
+                                    <td><?= Mascara::mask($registro->cnpj, '##.###.###/####-##') ?></td>
                                     <td><?= $registro->telefone ?></td>
                                     <td><?= ($registro->status ? 'Ativo' : 'Inativo') ?></td>
                                 </tr>
